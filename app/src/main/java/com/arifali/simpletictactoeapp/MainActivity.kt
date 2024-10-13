@@ -6,8 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -60,11 +63,21 @@ class MainActivity : ComponentActivity() {
         val context = LocalContext.current
 
         if (!gameStarted) {
+                Spacer(modifier = Modifier.padding(top = 50.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(top = 280.dp, start = 30.dp)
+                    .background(Color.White)
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(80.dp)) {
+            )
+
+            {
                 TextField(
                     value = player1Name,
                     onValueChange = { player1Name = it },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .background(Color.Red),
                     label = { Text("Player 1 Name") }
                 )
                 TextField(
@@ -81,7 +94,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } else {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 70.dp, start = 20.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 170.dp, start = 25.dp)) {
                 Text("Current Player: ${if (gameState.currentPlayer == 1) gameState.player1Name else gameState.player2Name}", fontSize = 18.sp)
 
                 LazyColumn {
@@ -96,7 +109,7 @@ class MainActivity : ComponentActivity() {
                                 Box(
                                     modifier = Modifier
                                         .size(80.dp)
-                                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
+                                        .border(2.dp, Color.Blue, shape = RoundedCornerShape(8.dp))
                                         .clickable {
                                             if (viewModel.makeMove(row, col)) {
                                                 val winner = gameState.checkWinner()
@@ -129,7 +142,15 @@ class MainActivity : ComponentActivity() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = { viewModel.resetGame() }) {
+                Button(
+                    onClick = { viewModel.resetGame() },
+                    colors = ButtonDefaults.buttonColors(Color.Red),
+                    modifier = Modifier
+                        .padding(16.dp) // Add padding around the button
+                        .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
+
+                ) {
+
                     Text("Reset Game")
                 }
             }
